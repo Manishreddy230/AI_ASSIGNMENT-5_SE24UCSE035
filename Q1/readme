@@ -1,77 +1,86 @@
-# AI Search Algorithms for Tic-Tac-Toe
-
-## About the Project
-
-This project presents the implementation of four classical Artificial Intelligence search algorithms applied to the Tic-Tac-Toe game. The objective is to compare different decision-making techniques used in adversarial environments and evaluate their effectiveness in selecting optimal moves.
-
-Implemented algorithms:
-
-- Minimax Search
-- Alpha-Beta Pruning
-- Heuristic Alpha-Beta Search
-- Monte Carlo Tree Search (MCTS)
+# Assignment 5 - Q1 - Game Search Algorithms
 
 ---
 
-## Algorithm Summary
+## Objective
+
+The objective of this assignment is to implement and test the following game search algorithms:
+
+- Minimax Search
+- Alpha-Beta Search
+- Heuristic Alpha-Beta Search
+- Monte-Carlo Tree Search (MCTS)
+
+The algorithms are implemented using the Tic-Tac-Toe game.
+
+---
+
+## Game Used: Tic-Tac-Toe
+
+Tic-Tac-Toe is a two-player zero-sum game played on a 3×3 board.
+
+- Player X attempts to maximize the score.
+- Player O attempts to minimize the score.
+- A player wins by forming three consecutive symbols in a row, column, or diagonal.
+- If no player wins and all cells are filled, the game ends in a draw.
+
+---
+
+## Algorithms Implemented
 
 ### Minimax Search
 
-Minimax explores every possible game state and chooses the move that maximizes the player's outcome while assuming the opponent always makes the best possible move.
+Minimax explores all possible game states and selects the move that maximizes the player's chances of winning while assuming the opponent plays optimally.
 
-**Key Characteristics**
+#### Evaluation Values
 
-- Complete game tree exploration
-- Optimal decision making
-- Suitable for small search spaces
+| Result | Value |
+|----------|----------|
+| X Wins | 1 |
+| Draw | 0 |
+| O Wins | -1 |
 
-### Alpha-Beta Pruning
+---
 
-Alpha-Beta Pruning improves the efficiency of Minimax by eliminating branches that cannot affect the final decision.
+### Alpha-Beta Search
 
-**Key Characteristics**
+Alpha-Beta Search is an optimization of Minimax that avoids exploring branches that cannot influence the final decision.
 
-- Reduced search space
-- Faster execution
-- Produces the same result as Minimax
+#### Advantages
+
+- Reduces search space
+- Improves execution speed
+- Produces the same optimal result as Minimax
+
+---
 
 ### Heuristic Alpha-Beta Search
 
-A depth-limited version of Alpha-Beta Search that uses an evaluation function to estimate board quality when the search depth limit is reached.
+Heuristic Alpha-Beta Search limits the search depth and uses an evaluation function to estimate board quality.
 
-**Key Characteristics**
+#### Advantages
 
-- Faster than exhaustive search
-- Suitable for larger problems
+- Faster than complete tree search
+- Suitable for larger search spaces
 - Uses heuristic evaluation
 
-### Monte Carlo Tree Search (MCTS)
+---
 
-MCTS evaluates moves through repeated random simulations and selects the move with the highest success rate.
+### Monte-Carlo Tree Search (MCTS)
 
-**Key Characteristics**
+Monte-Carlo Tree Search estimates the quality of a move through repeated random simulations.
 
-- Simulation-based search
+#### Advantages
+
+- Simulation-based approach
 - Effective for large state spaces
 - Does not require full tree exploration
 
 ---
 
-## Project Structure
+## Test Case 1
 
-```text
-.
-├── ai_search_algorithms.py
-└── README.md
-```
-
----
-
-## Test Results
-
-### Test Case 1
-
-Current Board
+### Board
 
 ```text
 X | X |
@@ -79,15 +88,17 @@ O | O |
   |   |
 ```
 
-Player: X
-
-Expected Result
+### Player to Move
 
 ```text
-Position 2
+X
 ```
 
-Algorithm Output
+### Expected Result
+
+X should place at position 2 and win.
+
+### Output
 
 ```text
 Minimax Move: 2 Value: 1
@@ -98,9 +109,9 @@ MCTS Move: 2
 
 ---
 
-### Test Case 2
+## Test Case 2
 
-Current Board
+### Board
 
 ```text
 X | O | X
@@ -108,9 +119,13 @@ X | O | X
   |   |
 ```
 
-Player: X
+### Player to Move
 
-Algorithm Output
+```text
+X
+```
+
+### Output
 
 ```text
 Minimax Move: 7 Value: 0
@@ -119,11 +134,15 @@ Heuristic Alpha-Beta Move: 7 Heuristic Value: 10
 MCTS Move: may vary
 ```
 
+### Note
+
+MCTS output may vary because it uses random simulations.
+
 ---
 
-### Test Case 3
+## Test Case 3
 
-Current Board
+### Board
 
 ```text
 X | O | X
@@ -131,15 +150,17 @@ O | X |
   |   | O
 ```
 
-Player: X
-
-Expected Result
+### Player to Move
 
 ```text
-Position 6
+X
 ```
 
-Algorithm Output
+### Expected Result
+
+X should place at position 6 and win.
+
+### Output
 
 ```text
 Minimax Move: 6 Value: 1
@@ -150,9 +171,9 @@ MCTS Move: 6
 
 ---
 
-### Test Case 4
+## Test Case 4
 
-Current Board
+### Board
 
 ```text
 O | O |
@@ -160,15 +181,17 @@ X | X |
   |   |
 ```
 
-Player: O
-
-Expected Result
+### Player to Move
 
 ```text
-Position 2
+O
 ```
 
-Algorithm Output
+### Expected Result
+
+O should place at position 2 and win.
+
+### Output
 
 ```text
 Minimax Move: 2 Value: -1
@@ -179,28 +202,26 @@ MCTS Move: 2
 
 ---
 
-## Performance Analysis
+## Complexity Analysis
 
 | Algorithm | Time Complexity | Space Complexity |
 |------------|----------------|------------------|
 | Minimax | O(b^d) | O(d) |
-| Alpha-Beta Pruning | O(b^d) | O(d) |
-| Heuristic Alpha-Beta | O(b^k) | O(k) |
-| MCTS | O(N × Simulation Length) | O(N) |
+| Alpha-Beta Search | O(b^d) | O(d) |
+| Heuristic Alpha-Beta Search | O(b^k) | O(k) |
+| Monte-Carlo Tree Search | O(N × Simulation Length) | O(N) |
 
 Where:
 
-- b = branching factor
-- d = search depth
-- k = depth limit
-- N = number of simulations
+- b = Branching Factor
+- d = Search Depth
+- k = Depth Limit
+- N = Number of Simulations
 
 ---
 
 ## Conclusion
 
-The implemented algorithms successfully determine optimal moves for Tic-Tac-Toe game states.
+The implementation successfully demonstrates the working of Minimax Search, Alpha-Beta Search, Heuristic Alpha-Beta Search, and Monte-Carlo Tree Search on the Tic-Tac-Toe game.
 
-Minimax and Alpha-Beta Pruning guarantee optimal decisions, Heuristic Alpha-Beta improves computational efficiency through evaluation functions, and Monte Carlo Tree Search provides a simulation-based alternative suitable for larger search spaces.
-
-This project demonstrates the practical application of adversarial search techniques in Artificial Intelligence.
+The test results confirm that the algorithms correctly identify optimal moves, while Monte-Carlo Tree Search uses simulation-based decision making to estimate move quality.
