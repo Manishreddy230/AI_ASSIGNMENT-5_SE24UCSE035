@@ -1,64 +1,226 @@
-P_Burglary = {
-    True: 0.001,
-    False: 0.999
-}
+class BayesianNetwork:
 
-P_Earthquake = {
-    True: 0.002,
-    False: 0.998
-}
+    def __init__(self):
 
-P_Alarm = {
-    (True, True): 0.95,
-    (True, False): 0.94,
-    (False, True): 0.29,
-    (False, False): 0.001
-}
+        self.P_Burglary = {
+            True: 0.001,
+            False: 0.999
+        }
 
-P_JohnCalls = {
-    True: 0.90,
-    False: 0.05
-}
+        self.P_Earthquake = {
+            True: 0.002,
+            False: 0.998
+        }
 
-P_MaryCalls = {
-    True: 0.70,
-    False: 0.01
-}
+        self.P_Alarm = {
+            (True, True): 0.95,
+            (True, False): 0.94,
+            (False, True): 0.29,
+            (False, False): 0.001
+        }
 
+        self.P_JohnCalls = {
+            True: 0.90,
+            False: 0.05
+        }
 
-def probability_burglary_given_calls():
+        self.P_MaryCalls = {
+            True: 0.70,
+            False: 0.01
+        }
 
-    numerator = 0
-    denominator = 0
+    def show_network(self):
 
-    for burglary in [True, False]:
-        for earthquake in [True, False]:
+        print("\nBAYESIAN NETWORK STRUCTURE\n")
 
-            p_b = P_Burglary[burglary]
-            p_e = P_Earthquake[earthquake]
+        print("Burglary ------>")
+        print("                  Alarm ------> JohnCalls")
+        print("Earthquake ---->")
+        print("                  Alarm ------> MaryCalls")
 
-            p_a = P_Alarm[(burglary, earthquake)]
+    def display_probabilities(self):
 
-            p_j = P_JohnCalls[True]
-            p_m = P_MaryCalls[True]
+        print("\nPRIOR PROBABILITIES\n")
 
-            joint = p_b * p_e * p_a * p_j * p_m
+        print("P(Burglary=True)  =", self.P_Burglary[True])
+        print("P(Burglary=False) =", self.P_Burglary[False])
+
+        print("\nP(Earthquake=True)  =", self.P_Earthquake[True])
+        print("P(Earthquake=False) =", self.P_Earthquake[False])
+
+    def calculate_joint_probability(
+            self,
+            burglary,
+            earthquake):
+
+        p_b = self.P_Burglary[burglary]
+        p_e = self.P_Earthquake[earthquake]
+
+        p_a = self.P_Alarm[
+            (burglary, earthquake)
+        ]
+
+        p_j = self.P_JohnCalls[True]
+        p_m = self.P_MaryCalls[True]
+
+        joint = (
+            p_b *
+            p_e *
+            p_a *
+            p_j *
+            p_m
+        )
+
+        return joint
+
+    def show_joint_table(self):
+
+        print("\nJOINT PROBABILITY TABLE\n")
+
+        cases = [
+            (True, True),
+            (True, False),
+            (False, True),
+            (False, False)
+        ]
+
+        for burglary, earthquake in cases:
+
+            probability = self.calculate_joint_probability(
+                burglary,
+                earthquake
+            )
+
+            print(
+                "Burglary =",
+                burglary,
+                " Earthquake =",
+                earthquake,
+                " Joint Probability =",
+                round(probability, 8)
+            )
+
+    def probability_of_alarm(self):
+
+        total = 0
+
+        cases = [
+            (True, True),
+            (True, False),
+            (False, True),
+            (False, False)
+        ]
+
+        for burglary, earthquake in cases:
+
+            total += (
+                self.P_Burglary[burglary]
+                *
+                self.P_Earthquake[earthquake]
+                *
+                self.P_Alarm[
+                    (burglary, earthquake)
+                ]
+            )
+
+        return total
+
+    def probability_of_burglary_given_calls(self):
+
+        numerator = 0
+        denominator = 0
+
+        cases = [
+            (True, True),
+            (True, False),
+            (False, True),
+            (False, False)
+        ]
+
+        for burglary, earthquake in cases:
+
+            joint = self.calculate_joint_probability(
+                burglary,
+                earthquake
+            )
 
             denominator += joint
 
             if burglary:
                 numerator += joint
 
-    return numerator / denominator
+        return numerator / denominator
+
+    def probability_of_earthquake_given_calls(self):
+
+        numerator = 0
+        denominator = 0
+
+        cases = [
+            (True, True),
+            (True, False),
+            (False, True),
+            (False, False)
+        ]
+
+        for burglary, earthquake in cases:
+
+            joint = self.calculate_joint_probability(
+                burglary,
+                earthquake
+            )
+
+            denominator += joint
+
+            if earthquake:
+                numerator += joint
+
+        return numerator / denominator
+
+    def inference_report(self):
+
+        print("\nINFERENCE RESULTS\n")
+
+        alarm_probability = self.probability_of_alarm()
+
+        print(
+            "Probability of Alarm =",
+            round(alarm_probability, 6)
+        )
+
+        burglary_probability = (
+            self.probability_of_burglary_given_calls()
+        )
+
+        print(
+            "Probability of Burglary given JohnCalls and MaryCalls =",
+            round(burglary_probability, 6)
+        )
+
+        earthquake_probability = (
+            self.probability_of_earthquake_given_calls()
+        )
+
+        print(
+            "Probability of Earthquake given JohnCalls and MaryCalls =",
+            round(earthquake_probability, 6)
+        )
 
 
-print("Bayesian Network Example")
-print("------------------------")
+bn = BayesianNetwork()
 
-print("P(Burglary=True) =", P_Burglary[True])
-print("P(Earthquake=True) =", P_Earthquake[True])
+print("\n====================================")
+print(" BAYESIAN NETWORK IMPLEMENTATION ")
+print("====================================")
 
-result = probability_burglary_given_calls()
+bn.show_network()
 
-print("\nProbability of Burglary given JohnCalls and MaryCalls:")
-print(round(result, 4))
+bn.display_probabilities()
+
+bn.show_joint_table()
+
+bn.inference_report()
+
+print("\n====================================")
+print(" EXECUTION COMPLETED ")
+print("====================================")
