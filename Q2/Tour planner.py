@@ -4,16 +4,37 @@ class TravelPlanner:
 
         self.places = {
             "Hyderabad": {
-                "History": ["Charminar", "Golconda Fort", "Salar Jung Museum"],
-                "Food": ["Paradise Biryani", "Shadab Restaurant"]
+                "History": [
+                    "Charminar",
+                    "Golconda Fort",
+                    "Salar Jung Museum"
+                ],
+                "Food": [
+                    "Paradise Biryani",
+                    "Shadab Restaurant"
+                ]
             },
             "Goa": {
-                "Beach": ["Baga Beach", "Calangute Beach", "Anjuna Beach"],
-                "Food": ["Fisherman's Wharf", "Vinayak Family Restaurant"]
+                "Beach": [
+                    "Baga Beach",
+                    "Calangute Beach",
+                    "Anjuna Beach"
+                ],
+                "Food": [
+                    "Fisherman's Wharf",
+                    "Vinayak Family Restaurant"
+                ]
             },
             "Delhi": {
-                "History": ["Red Fort", "India Gate", "Qutub Minar"],
-                "Food": ["Karim's", "Paranthe Wali Gali"]
+                "History": [
+                    "Red Fort",
+                    "India Gate",
+                    "Qutub Minar"
+                ],
+                "Food": [
+                    "Karim's",
+                    "Paranthe Wali Gali"
+                ]
             }
         }
 
@@ -55,17 +76,22 @@ class TravelPlanner:
     def recommend_hotel(self, city, budget):
 
         if city not in self.hotels:
-            return None
+            return ("No Hotel Available", 0)
 
-        for hotel, cost in sorted(self.hotels[city], key=lambda x: x[1]):
+        suitable_hotels = sorted(
+            self.hotels[city],
+            key=lambda x: x[1]
+        )
+
+        for hotel, cost in suitable_hotels:
             if cost <= budget:
                 return hotel, cost
 
-        return self.hotels[city][0]
+        return suitable_hotels[0]
 
     def estimate_cost(self, city, days, hotel_cost):
 
-        transport = self.travel_cost[city]
+        transport = self.travel_cost.get(city, 0)
         accommodation = hotel_cost * days
         food = 1000 * days
 
@@ -73,10 +99,9 @@ class TravelPlanner:
 
         return total
 
-    def generate_itinerary(self, city, places, days):
+    def generate_itinerary(self, places, days):
 
         itinerary = {}
-
         index = 0
 
         for day in range(1, days + 1):
@@ -94,15 +119,37 @@ planner = TravelPlanner()
 
 print("\n===== AI TRAVEL PLANNER =====\n")
 
-city = input("Enter Destination City (Hyderabad/Goa/Delhi): ")
-interest = input("Enter Interest (History/Beach): ")
-budget = int(input("Enter Budget (INR): "))
-days = int(input("Enter Number of Days: "))
+city = input(
+    "Enter Destination City (Hyderabad/Goa/Delhi): "
+).title()
 
-places = planner.recommend_places(city, interest)
+interest = input(
+    "Enter Interest (History/Beach): "
+).title()
+
+budget = int(
+    input("Enter Budget (INR): ")
+)
+
+days = int(
+    input("Enter Number of Days: ")
+)
+
+if city not in planner.places:
+    print("\nInvalid destination entered.")
+    exit()
+
+places = planner.recommend_places(
+    city,
+    interest
+)
+
 food = planner.recommend_food(city)
 
-hotel, hotel_cost = planner.recommend_hotel(city, budget)
+hotel, hotel_cost = planner.recommend_hotel(
+    city,
+    budget
+)
 
 total_cost = planner.estimate_cost(
     city,
@@ -111,7 +158,6 @@ total_cost = planner.estimate_cost(
 )
 
 itinerary = planner.generate_itinerary(
-    city,
     places,
     days
 )
@@ -130,14 +176,16 @@ for item in food:
 
 print("\nRecommended Hotel:")
 print(hotel)
-print("Cost Per Night: ₹", hotel_cost)
+
+print("\nCost Per Night:")
+print(f"₹{hotel_cost}")
 
 print("\nEstimated Total Cost:")
-print("₹", total_cost)
+print(f"₹{total_cost}")
 
-print("\nItinerary:")
+print("\nTravel Itinerary:")
 
 for day, activity in itinerary.items():
-    print(day + ":", activity)
+    print(day + " :", activity)
 
 print("\n===== END OF PLAN =====")
