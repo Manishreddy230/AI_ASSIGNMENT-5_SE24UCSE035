@@ -1,0 +1,247 @@
+# AI Search Algorithms for Tic-Tac-Toe
+
+## Overview
+
+This project implements four fundamental Artificial Intelligence search algorithms for solving the Tic-Tac-Toe game:
+
+- Minimax Search
+- Alpha-Beta Pruning
+- Heuristic Alpha-Beta Search
+- Monte Carlo Tree Search (MCTS)
+
+The implementation demonstrates how different search strategies can be used to make optimal decisions in a two-player adversarial game.
+
+---
+
+## Algorithms Implemented
+
+### 1. Minimax Search
+
+Minimax is a recursive algorithm used in decision-making and game theory.
+
+**Features**
+- Explores the complete game tree.
+- Assumes both players play optimally.
+- Guarantees the best possible move.
+
+**Evaluation Values**
+- X wins → `1`
+- Draw → `0`
+- O wins → `-1`
+
+---
+
+### 2. Alpha-Beta Pruning
+
+Alpha-Beta Pruning is an optimization of Minimax.
+
+**Features**
+- Produces the same result as Minimax.
+- Eliminates unnecessary branches.
+- Reduces search time significantly.
+
+---
+
+### 3. Heuristic Alpha-Beta Search
+
+A depth-limited version of Alpha-Beta Search.
+
+**Features**
+- Uses a heuristic evaluation function.
+- Suitable for larger search spaces.
+- Faster than full tree exploration.
+
+---
+
+### 4. Monte Carlo Tree Search (MCTS)
+
+MCTS uses random simulations to estimate move quality.
+
+**Features**
+- Performs repeated random playouts.
+- Selects moves with the highest average success.
+- Effective for complex games with large state spaces.
+
+---
+
+## Project Structure
+
+```text
+.
+├── ai_search_algorithms.py
+└── README.md
+```
+
+### Main Components
+
+| Function | Description |
+|-----------|-------------|
+| `minimax()` | Recursive Minimax evaluation |
+| `minimax_best_move()` | Best move using Minimax |
+| `alpha_beta()` | Alpha-Beta evaluation |
+| `alpha_beta_best_move()` | Best move using Alpha-Beta |
+| `heuristic()` | Board evaluation function |
+| `heuristic_alpha_beta()` | Depth-limited Alpha-Beta |
+| `heuristic_alpha_beta_best_move()` | Best move using Heuristic Alpha-Beta |
+| `random_playout()` | Performs random simulation |
+| `mcts()` | Monte Carlo Tree Search |
+
+---
+
+## Test Cases
+
+### Test Case 1
+
+Board State:
+
+```text
+X | X | _
+O | O | _
+_ | _ | _
+```
+
+Expected Move:
+
+```text
+2
+```
+
+Reason:
+
+Player X wins immediately by completing the first row.
+
+---
+
+### Test Case 2
+
+Board State:
+
+```text
+O | O | _
+X | _ | _
+_ | _ | X
+```
+
+Expected Move:
+
+```text
+2
+```
+
+Reason:
+
+Player X blocks O from winning.
+
+---
+
+### Test Case 3
+
+Board State:
+
+```text
+_ | _ | _
+_ | _ | _
+_ | _ | _
+```
+
+Expected Move:
+
+```text
+4
+```
+
+Reason:
+
+The center position provides the best strategic advantage.
+
+---
+
+## Sample Output
+
+```text
+========== TEST CASE 1 ==========
+
+X | X |
+O | O |
+  |   |
+
+Minimax Move: 2
+Alpha-Beta Move: 2
+Heuristic Alpha-Beta Move: 2
+MCTS Move: 2
+
+========== TEST CASE 2 ==========
+
+O | O |
+X |   |
+  |   | X
+
+Minimax Move: 2
+Alpha-Beta Move: 2
+Heuristic Alpha-Beta Move: 2
+MCTS Move: 2
+
+========== TEST CASE 3 ==========
+
+  |   |
+  |   |
+  |   |
+
+Minimax Move: 4
+Alpha-Beta Move: 4
+Heuristic Alpha-Beta Move: 4
+MCTS Move: 4
+
+========== EXECUTION COMPLETE ==========
+```
+
+---
+
+## Complexity Analysis
+
+| Algorithm | Time Complexity | Space Complexity |
+|------------|----------------|------------------|
+| Minimax | O(b^d) | O(d) |
+| Alpha-Beta Pruning | O(b^d) Worst Case | O(d) |
+| Alpha-Beta Pruning | O(b^(d/2)) Best Case | O(d) |
+| Heuristic Alpha-Beta | O(b^k) | O(k) |
+| MCTS | O(N × Simulation Length) | O(N) |
+
+Where:
+
+- `b` = Branching Factor
+- `d` = Search Depth
+- `k` = Depth Limit
+- `N` = Number of Simulations
+
+---
+
+## Results
+
+The implemented algorithms successfully identified optimal moves across multiple Tic-Tac-Toe board configurations.
+
+### Observations
+
+- Minimax always finds the optimal move.
+- Alpha-Beta Pruning produces identical results while exploring fewer nodes.
+- Heuristic Alpha-Beta improves efficiency using evaluation functions.
+- MCTS provides strong move selection through repeated simulations.
+
+---
+
+## Technologies Used
+
+- Python 3
+- Object-Oriented Programming
+- Artificial Intelligence Search Techniques
+
+---
+
+## Conclusion
+
+This project demonstrates the implementation and comparison of four important AI search algorithms. The results validate their correctness and highlight the trade-offs between exhaustive search, pruning techniques, heuristic evaluation, and simulation-based decision-making.
+
+---
+**Course:** Artificial Intelligence  
+**Topic:** Adversarial Search Algorithms  
+**Game Environment:** Tic-Tac-Toe
