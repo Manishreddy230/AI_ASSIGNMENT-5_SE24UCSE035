@@ -1,101 +1,82 @@
-import networkx as nx
-import matplotlib.pyplot as plt
-
 class KnowledgeGraph:
 
     def __init__(self):
-        self.graph = nx.DiGraph()
+        self.graph = {}
 
     def add_entity(self, entity):
-        self.graph.add_node(entity)
+        if entity not in self.graph:
+            self.graph[entity] = []
 
-    def add_relationship(self, source, target, relation):
-        self.graph.add_edge(source, target, relation=relation)
+    def add_relationship(self, source, relation, target):
+        self.add_entity(source)
+        self.add_entity(target)
+        self.graph[source].append((relation, target))
 
-    def display_relationships(self):
-        print("\nKnowledge Graph Relationships:\n")
+    def display(self):
+        print("\n===== KNOWLEDGE GRAPH =====\n")
 
-        for source, target, data in self.graph.edges(data=True):
-            print(f"{source} --({data['relation']})--> {target}")
+        for entity in self.graph:
+            for relation, target in self.graph[entity]:
+                print(
+                    entity,
+                    "--(" + relation + ")-->",
+                    target
+                )
 
-    def visualize(self):
+    def find_connections(self, entity):
 
-        plt.figure(figsize=(10, 7))
+        if entity not in self.graph:
+            print("\nEntity not found.")
+            return
 
-        pos = nx.spring_layout(self.graph, seed=42)
+        print("\nConnections for", entity)
 
-        nx.draw(
-            self.graph,
-            pos,
-            with_labels=True,
-            node_size=3500,
-            node_color="skyblue",
-            font_size=10,
-            font_weight="bold",
-            arrows=True
-        )
-
-        edge_labels = nx.get_edge_attributes(
-            self.graph,
-            "relation"
-        )
-
-        nx.draw_networkx_edge_labels(
-            self.graph,
-            pos,
-            edge_labels=edge_labels
-        )
-
-        plt.title("Knowledge Graph Example")
-        plt.show()
+        for relation, target in self.graph[entity]:
+            print(
+                entity,
+                "--(" + relation + ")-->",
+                target
+            )
 
 
 kg = KnowledgeGraph()
 
-kg.add_entity("Alice")
-kg.add_entity("University")
-kg.add_entity("Artificial Intelligence")
-kg.add_entity("Professor Smith")
-kg.add_entity("New York")
-kg.add_entity("Google")
-kg.add_entity("Machine Learning")
-
 kg.add_relationship(
     "Alice",
-    "University",
-    "studies_at"
+    "studies_at",
+    "University"
 )
 
 kg.add_relationship(
-    "Alice",
-    "Artificial Intelligence",
-    "learns"
+    "University",
+    "located_in",
+    "New York"
 )
 
 kg.add_relationship(
     "Professor Smith",
-    "Artificial Intelligence",
-    "teaches"
-)
-
-kg.add_relationship(
-    "University",
-    "New York",
-    "located_in"
+    "teaches",
+    "Artificial Intelligence"
 )
 
 kg.add_relationship(
     "Alice",
-    "Google",
-    "intern_at"
+    "learns",
+    "Artificial Intelligence"
 )
 
 kg.add_relationship(
-    "Machine Learning",
     "Artificial Intelligence",
-    "part_of"
+    "includes",
+    "Machine Learning"
 )
 
-kg.display_relationships()
+kg.add_relationship(
+    "Alice",
+    "intern_at",
+    "Google"
+)
 
-kg.visualize()
+kg.display()
+
+kg.find_connections("Alice")
